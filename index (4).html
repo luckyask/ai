@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sierra Suites Software - Artificial Intelligence</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --dark-bg: #0a0a18;
+            --primary: #00e6ff;
+            --turquoise: #2EE8BB;
+            --secondary: #7A4B76; /* Dark red violet */
+            --accent: #B86B77; /* Lighter maroon */
+            --text: #ffffff;
+            --text-secondary: #e0e0ff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Enhanced Aurora Background */
+        .aurora-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -2;
+            overflow: hidden;
+        }
+        
+        .aurora {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #0a0a18, #0f1524, #141b35, #0f1729);
+            background-size: 400% 400%;
+            animation: gradientShift 12s ease infinite;
+        }
+        
+        .aurora:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(46, 232, 187, 0.7), transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(122, 75, 118, 0.7), transparent 30%),
+                radial-gradient(circle at 50% 80%, rgba(0, 230, 255, 0.6), transparent 30%);
+            background-blend-mode: screen;
+            z-index: -1;
+            opacity: 0.8;
+            animation: auroraMovement 15s ease-in-out infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes auroraMovement {
+            0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+            33% { transform: translate(-40px, -30px) scale(1.08); opacity: 0.9; }
+            66% { transform: translate(30px, 40px) scale(1.05); opacity: 0.85; }
+        }
+        
+        /* Bottom Blur Effect */
+        .blur-overlay {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20%;
+            backdrop-filter: blur(10px);
+            mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+            -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0) 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 0;
+            position: relative;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-family: 'Exo 2', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--turquoise), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 16px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--turquoise);
+        }
+        
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 60px 0;
+            position: relative;
+        }
+        
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(to right, var(--turquoise), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(45deg, var(--turquoise), var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 10;
+            font-family: 'Exo 2', sans-serif;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(46, 232, 187, 0.3);
+        }
+        
+        /* Updated Click Me Indicator */
+        .click-indicator {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            background: var(--turquoise);
+            color: var(--dark-bg);
+            border-radius: 12px;
+            padding: 4px 10px;
+            font-size: 12px;
+            font-weight: 600;
+            animation: pulse 2s infinite;
+            transform-origin: center;
+            z-index: 15;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .button-container {
+            position: relative;
+            display: inline-block;
+            margin: 10px;
+        }
+        
+        /* Electric Border Boxes - Slower Animation */
+        .electric-box {
+            position: relative;
+            padding: 30px;
+            border-radius: 10px;
+            background: rgba(15, 21, 36, 0.7);
+            margin: 20px 0;
+            overflow: hidden;
+            z-index: 10;
+        }
+        
+        .electric-box::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--turquoise), var(--primary), var(--secondary), var(--turquoise));
+            background-size: 400% 400%;
+            animation: electricBorder 8s ease infinite; /* Slowed down from 3s to 8s */
+            border-radius: 12px;
+        }
+        
+        @keyframes electricBorder {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* Features Section */
+        .features {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            background: rgba(15, 21, 36, 0.6);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--turquoise);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+        
+        /* Agents Section - Removed Dark Background */
+        .agents {
+            padding: 100px 0;
+            /* Removed the dark background to make it seamless */
+        }
+        
+        .agent-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .agent-card {
+            padding: 30px;
+            border-radius: 10px;
+            background: rgba(15, 21, 36, 0.6);
+            transition: transform 0.3s ease;
+        }
+        
+        .agent-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .agent-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--turquoise);
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            text-align: center;
+        }
+        
+        .contact-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .contact-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .contact-icon {
+            font-size: 2rem;
+            color: var(--turquoise);
+            margin-bottom: 15px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 40px 0;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .features-grid, .agent-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .contact-info {
+                flex-direction: column;
+                gap: 30px;
+            }
+            
+            .click-indicator {
+                padding: 3px 8px;
+                font-size: 10px;
+                top: -8px;
+                right: -8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Aurora Background -->
+    <div class="aurora-container">
+        <div class="aurora"></div>
+    </div>
+    
+    <!-- Bottom Blur Overlay -->
+    <div class="blur-overlay"></div>
+        
+    <div class="container">
+        <!-- Navigation -->
+        <nav>
+            <div class="logo">Sierra Suites Software</div>
+            <div class="nav-links">
+                <a href="advantages.html">Advantages</a>
+                <a href="#features">Features</a>
+                <a href="#agents">Solutions</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </nav>
+        
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Artificial Intelligence Solutions</h1>
+            <p>We create sophisticated AI systems and tools that transform businesses. Automate complex tasks, analyze data at scale, and deliver exceptional customer experiences.</p>
+            <div class="button-container">
+                <a href="advantages.html" class="cta-button">Business Advantages of Utilizing AI</a>
+                <div class="click-indicator">click me</div>
+            </div>
+        </section>
+        
+        <!-- Features Section -->
+        <section class="features" id="features">
+            <div class="section-title">
+                <h2>Why Our AI Solutions</h2>
+                <p>Next-generation artificial intelligence designed for enterprise performance</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="electric-box">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Advanced Cognition</h3>
+                        <p>Our systems utilize cutting-edge neural networks for complex decision-making and problem-solving.</p>
+                    </div>
+                </div>
+                
+                <div class="electric-box">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h3>Lightning Fast</h3>
+                        <p>Process information and execute tasks in milliseconds, far exceeding human capabilities.</p>
+                    </div>
+                </div>
+                
+                <div class="electric-box">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Secure & Reliable</h3>
+                        <p>Enterprise-grade security protocols ensure your data remains protected at all times.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Agents Section -->
+        <section class="agents" id="agents">
+            <div class="section-title">
+                <h2>Our AI Solutions</h2>
+                <p>Business Specialized AI systems designed for your business needs</p>
+            </div>
+            
+            <div class="agent-cards">
+                <div class="electric-box">
+                    <div class="agent-card">
+                        <h3>Customer Experience AI</h3>
+                        <p>Intelligent systems that handle inquiries, provide personalized recommendations, and resolve issues 24/7.</p>
+                    </div>
+                </div>
+                
+                <div class="electric-box">
+                    <div class="agent-card">
+                        <h3>Operations Automation</h3>
+                        <p>AI systems that optimize workflows, manage inventory, and identify efficiency improvements.</p>
+                    </div>
+                </div>
+                
+                <div class="electric-box">
+                    <div class="agent-card">
+                        <h3>Data Intelligence</h3>
+                        <p>Advanced analysis systems that process complex datasets, identify patterns, and generate actionable insights.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="section-title">
+                <h2>Ready to Transform Your Business?</h2>
+                <p>Get in touch with our team to discuss how our AI solutions can drive growth and innovation for your organization.</p>
+            </div>
+            
+            <div class="contact-content">
+                <div class="button-container" style="margin-bottom: 30px;">
+                    <a href="advantages.html" class="cta-button">Business Advantages of Utilizing AI</a>
+                    <div class="click-indicator">click me</div>
+                </div>
+                
+                <a href="#contact" class="cta-button">Contact Us Today</a>
+                
+                <div class="contact-info">
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <h3>Call Us</h3>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <h3>Email Us</h3>
+                        <p>info@sierrasuites.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer>
+            <p>2025 Sierra Suites Software. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Electric border animation enhancement
+        const electricBoxes = document.querySelectorAll('.electric-box');
+        electricBoxes.forEach(box => {
+            box.addEventListener('mouseenter', () => {
+                box.style.transform = 'scale(1.02)';
+                box.style.transition = 'transform 0.3s ease';
+            });
+            
+            box.addEventListener('mouseleave', () => {
+                box.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>
